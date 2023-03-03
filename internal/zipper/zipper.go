@@ -2,11 +2,13 @@ package zipper
 
 import (
 	"archive/zip"
+	"bytes"
 	"errors"
 	"io"
 	"strings"
-	"unicode"
-	"unicode/utf8"
+
+	"golang.org/x/text/encoding/unicode"
+	"golang.org/x/text/transform"
 )
 
 // NewZipper create Zipper instance for the specified zip archive file path
@@ -38,30 +40,21 @@ func (z *Zipper) OpenFile(name string) (reader io.Reader, err error) {
 }
 
 // ReadTextFile reads content of the text file from the archive
-func (z *Zipper) ReadTextFile(name string) (text string, err error) {
+func (z *Zipper) ReadTextFile(name string) (reader io.Reader, err error) {
 	file, err := z.OpenFile(name)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	b, err := io.ReadAll(file)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	text = strings.ToValidUTF8(string(b), "")
+	// Convert from UTF-16
+	utf16enc := unicode.UTF16(unicode.BigEndian, unicode.IgnoreBOM)
+	utf16bom := unicode.BOMOverride(utf16enc.NewDecoder())
+	reader = transform.NewReader(bytes.NewReader(b), utf16bom)
 
-	text = strings.Map(func(rune rune) rune {
-		if rune == utf8.RuneError {
-			return -1
-		}
-
-		if unicode.IsPrint(rune) || unicode.IsSpace(rune) {
-			return rune
-		}
-
-		return -1
-	}, text)
-
-	return text, nil
+	return reader, nil
 }

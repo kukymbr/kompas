@@ -1,6 +1,7 @@
 package fileinfo_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/kukymbr/kompasreader/domain"
@@ -10,7 +11,7 @@ import (
 )
 
 func TestUnmarshall_WhenValidData_ExpectNoError(t *testing.T) {
-	cfg := `
+	cfg := strings.NewReader(`
 [FileInfo]
 AppName=КОМПАС-3D V16.1
 AppVersion=KOMPAS_16.1
@@ -26,7 +27,7 @@ Author=Author Name
 OrgName=
 Comment=Test Comment
 AutoSave=false
-`
+`)
 
 	info, err := fileinfo.Unmarshall(cfg)
 
@@ -63,7 +64,8 @@ Author=Author Name
 Comment=Test Comment`,
 	}
 
-	for _, cfg := range invalid {
+	for _, content := range invalid {
+		cfg := strings.NewReader(content)
 		info, err := fileinfo.Unmarshall(cfg)
 
 		assert.Error(t, err)

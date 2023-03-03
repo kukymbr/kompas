@@ -1,6 +1,7 @@
 package zipper_test
 
 import (
+	"io"
 	"strings"
 	"testing"
 
@@ -68,9 +69,12 @@ func TestZipper_ReadTextFile_WhenValidFile_ExpectNoError(t *testing.T) {
 	}
 
 	for file, prefix := range filesPrefixes {
-		text, err := zip.ReadTextFile(file)
+		reader, err := zip.ReadTextFile(file)
 		assert.NoError(t, err)
-		assert.True(t, strings.HasPrefix(text, prefix))
+
+		content, err := io.ReadAll(reader)
+		assert.NoError(t, err)
+		assert.True(t, strings.HasPrefix(string(content), prefix))
 	}
 }
 

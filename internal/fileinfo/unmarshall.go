@@ -1,6 +1,7 @@
 package fileinfo
 
 import (
+	"io"
 	"strings"
 	"time"
 
@@ -10,8 +11,8 @@ import (
 )
 
 // Unmarshall reads ini data from reader and converts it to domain.FileInfo instance
-func Unmarshall(configRaw string) (info *domain.FileInfo, err error) {
-	inidoc, err := ini.Load(strings.NewReader(configRaw))
+func Unmarshall(cfg io.Reader) (info *domain.FileInfo, err error) {
+	inidoc, err := ini.Load(cfg)
 	if err != nil {
 		return nil, err
 	}
