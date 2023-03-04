@@ -27,8 +27,8 @@ func TestNewZipper_WhenInvalidFile_ExpectError(t *testing.T) {
 func TestZipper_OpenFile_WhenValidFile_ExpectNoError(t *testing.T) {
 	filepath := "../../tests/example.spw"
 	files := []string{
-		"FileInfo",
-		"MetaInfo",
+		domain.FilenameFileInfo,
+		domain.FilenameMetaInfo,
 	}
 
 	zip, err := zipper.NewZipper(filepath)

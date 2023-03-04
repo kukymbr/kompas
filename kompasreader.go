@@ -6,6 +6,7 @@ import (
 
 	"github.com/kukymbr/kompasreader/domain"
 	"github.com/kukymbr/kompasreader/internal/fileinfo"
+	"github.com/kukymbr/kompasreader/internal/metainfo"
 	"github.com/kukymbr/kompasreader/internal/zipper"
 )
 
@@ -41,6 +42,21 @@ func (k *KompasReader) Read() (doc *domain.Document, err error) {
 	doc.FileInfo, err = fileinfo.Unmarshall(info)
 	if err != nil {
 		return nil, fmt.Errorf("unmarshall fileinfo: %w", err)
+	}
+
+	doc.MetaInfo = &domain.MetaInfo{}
+
+	{
+		meta, err := k.zipper.ReadTextFile(domain.FilenameMetaInfo)
+		if err != nil {
+			return nil, fmt.Errorf("read meta info: %w", err)
+		}
+
+		metaUnm := metainfo.NewUnmarshaller(meta)
+		doc.MetaInfo.SpcStruct, err = metaUnm.Unmarshall()
+		if err != nil {
+			return nil, fmt.Errorf("unmarshall meta info: %w", err)
+		}
 	}
 
 	return doc, nil
