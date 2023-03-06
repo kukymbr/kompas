@@ -35,5 +35,13 @@ func TestKompasReader_Read_WhenValidFile_ExpectNoError(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, doc)
 
+	require.NotNil(t, doc.FileInfo)
+	assert.Equal(t, "Lapina", doc.FileInfo.Author)
 	assert.Equal(t, domain.FileTypeSpw, doc.FileInfo.FileType)
+	assert.Equal(t, "16.1.0", doc.FileInfo.AppVersion.String())
+	assert.Equal(t, "2022-10-05 14:05:09", doc.FileInfo.CreatedAt.Format("2006-01-02 15:04:05"))
+
+	require.NotNil(t, doc.MetaInfo)
+	assert.Len(t, doc.MetaInfo.SpcStructSections, 4)
+	assert.Equal(t, "Детали", doc.MetaInfo.SpcStructSections[1].Name)
 }

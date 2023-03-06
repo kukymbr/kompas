@@ -53,7 +53,7 @@ func (k *KompasReader) Read() (doc *domain.Document, err error) {
 		}
 
 		metaUnm := metainfo.NewUnmarshaller(meta)
-		doc.MetaInfo.SpcStruct, err = metaUnm.Unmarshall()
+		doc.MetaInfo.SpcStructSections, err = metaUnm.Unmarshall()
 		if err != nil {
 			return nil, fmt.Errorf("unmarshall meta info: %w", err)
 		}

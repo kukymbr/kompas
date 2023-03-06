@@ -19,7 +19,7 @@ type Unmarshaller struct {
 	doc    *xmlDoc
 }
 
-func (u *Unmarshaller) Unmarshall() (spc domain.SpcStruct, err error) {
+func (u *Unmarshaller) Unmarshall() (spc domain.SpcStructSections, err error) {
 	u.doc = &xmlDoc{}
 
 	data, err := u.prepareXML()
@@ -36,7 +36,7 @@ func (u *Unmarshaller) Unmarshall() (spc domain.SpcStruct, err error) {
 		return nil, errors.New("mata info doc is not valid")
 	}
 
-	spc = make(domain.SpcStruct, len(u.doc.SpcDescriptions.SpcDescription[0].SpcStruct.Section))
+	spc = make(domain.SpcStructSections, len(u.doc.SpcDescriptions.SpcDescription[0].SpcStruct.Section))
 
 	for sectIndex, xmlSect := range u.doc.SpcDescriptions.SpcDescription[0].SpcStruct.Section {
 		sect := &domain.SpcStructSection{

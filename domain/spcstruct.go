@@ -1,9 +1,9 @@
 package domain
 
-// SpcStruct is a parsed struct of the spcStruct part of the Kompas' xml
-type SpcStruct []*SpcStructSection
+// SpcStructSections is a parsed struct of the spcStruct part of the Kompas' xml
+type SpcStructSections []*SpcStructSection
 
-// SpcStructSection is a one section of the SpcStruct
+// SpcStructSection is a one section of the SpcStructSections
 type SpcStructSection struct {
 	Name    string `example:"Сборочные единицы"`
 	Objects []*SpcObject
