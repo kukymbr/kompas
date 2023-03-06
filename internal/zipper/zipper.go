@@ -31,7 +31,7 @@ func (z *Zipper) Close() error {
 }
 
 // OpenFile opens file from the zip archive by its name
-func (z *Zipper) OpenFile(name string) (reader io.Reader, err error) {
+func (z *Zipper) OpenFile(name string) (reader io.ReadCloser, err error) {
 	if strings.Contains(name, "/") {
 		return nil, errors.New("only root directory files requests in zip allowed")
 	}
@@ -45,6 +45,10 @@ func (z *Zipper) ReadTextFile(name string) (reader io.Reader, err error) {
 	if err != nil {
 		return nil, err
 	}
+
+	defer func() {
+		_ = file.Close()
+	}()
 
 	b, err := io.ReadAll(file)
 	if err != nil {

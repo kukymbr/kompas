@@ -35,7 +35,10 @@ func TestZipper_OpenFile_WhenValidFile_ExpectNoError(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, file := range files {
-		_, err := zip.OpenFile(file)
+		f, err := zip.OpenFile(file)
+		assert.NoError(t, err)
+
+		err = f.Close()
 		assert.NoError(t, err)
 	}
 }

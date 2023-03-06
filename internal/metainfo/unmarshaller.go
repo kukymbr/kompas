@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"io"
+	"strings"
 
 	"github.com/kukymbr/kompasreader/domain"
 )
@@ -19,12 +20,12 @@ type Unmarshaller struct {
 }
 
 func (u *Unmarshaller) Unmarshall() (spc domain.SpcStruct, err error) {
-	data, err := io.ReadAll(u.reader)
+	u.doc = &xmlDoc{}
+
+	data, err := u.prepareXML()
 	if err != nil {
 		return nil, err
 	}
-
-	u.doc = &xmlDoc{}
 
 	err = xml.Unmarshal(data, &u.doc)
 	if err != nil {
@@ -56,6 +57,23 @@ func (u *Unmarshaller) Unmarshall() (spc domain.SpcStruct, err error) {
 	}
 
 	return spc, nil
+}
+
+func (u *Unmarshaller) prepareXML() (data []byte, err error) {
+	data, err = io.ReadAll(u.reader)
+	if err != nil {
+		return nil, err
+	}
+
+	str := string(data)
+	str = strings.TrimSpace(str)
+
+	header := `<?xml version="1.0" encoding="utf-16"?>`
+	if strings.HasPrefix(str, header) {
+		str = strings.TrimPrefix(str, header)
+	}
+
+	return []byte(str), nil
 }
 
 func (u *Unmarshaller) buildSpcObject(xmlSectObj *xmlDocSpcStructObject) *domain.SpcObject {
