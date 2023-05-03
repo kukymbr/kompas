@@ -3,10 +3,9 @@ package metainfo
 import (
 	"encoding/xml"
 	"errors"
+	"github.com/kukymbr/kompas"
 	"io"
 	"strings"
-
-	"github.com/kukymbr/kompasreader/domain"
 )
 
 // NewUnmarshaler creates new Unmarshaler instance for the reader
@@ -19,7 +18,7 @@ type Unmarshaler struct {
 	doc    *xmlDoc
 }
 
-func (u *Unmarshaler) Unmarshal() (spc domain.SpcStructSections, err error) {
+func (u *Unmarshaler) Unmarshal() (spc kompas.SpcStructSections, err error) {
 	u.doc = &xmlDoc{}
 
 	data, err := u.prepareXML()
@@ -36,12 +35,12 @@ func (u *Unmarshaler) Unmarshal() (spc domain.SpcStructSections, err error) {
 		return nil, errors.New("mata info doc is not valid")
 	}
 
-	spc = make(domain.SpcStructSections, len(u.doc.SpcDescriptions.SpcDescription[0].SpcStruct.Section))
+	spc = make(kompas.SpcStructSections, len(u.doc.SpcDescriptions.SpcDescription[0].SpcStruct.Section))
 
 	for sectIndex, xmlSect := range u.doc.SpcDescriptions.SpcDescription[0].SpcStruct.Section {
-		sect := &domain.SpcStructSection{
+		sect := &kompas.SpcStructSection{
 			Name:    xmlSect.AttrText,
-			Objects: make([]*domain.SpcObject, 0, len(xmlSect.Object)),
+			Objects: make([]*kompas.SpcObject, 0, len(xmlSect.Object)),
 		}
 
 		for _, xmlSectObj := range xmlSect.Object {
@@ -76,21 +75,21 @@ func (u *Unmarshaler) prepareXML() (data []byte, err error) {
 	return []byte(str), nil
 }
 
-func (u *Unmarshaler) buildSpcObject(xmlSectObj *xmlDocSpcStructObject) *domain.SpcObject {
+func (u *Unmarshaler) buildSpcObject(xmlSectObj *xmlDocSpcStructObject) *kompas.SpcObject {
 	xmlObj := u.doc.findSpcObjectByID(xmlSectObj.ID)
 	if xmlObj == nil {
 		return nil
 	}
 
-	obj := &domain.SpcObject{
+	obj := &kompas.SpcObject{
 		ID:                xmlObj.ID,
 		Text:              xmlSectObj.AttrText,
-		Columns:           make([]*domain.SpcObjectColumn, len(xmlObj.Columns.Column)),
-		AdditionalColumns: make([]*domain.SpcObjectColumn, len(xmlObj.AdditionalColumns.Column)),
+		Columns:           make([]*kompas.SpcObjectColumn, len(xmlObj.Columns.Column)),
+		AdditionalColumns: make([]*kompas.SpcObjectColumn, len(xmlObj.AdditionalColumns.Column)),
 	}
 
 	for i, xmlCol := range xmlObj.Columns.Column {
-		obj.Columns[i] = &domain.SpcObjectColumn{
+		obj.Columns[i] = &kompas.SpcObjectColumn{
 			Name:     xmlCol.Name,
 			TypeName: xmlCol.TypeName,
 			Value:    xmlCol.Value,
@@ -98,7 +97,7 @@ func (u *Unmarshaler) buildSpcObject(xmlSectObj *xmlDocSpcStructObject) *domain.
 	}
 
 	for i, xmlCol := range xmlObj.AdditionalColumns.Column {
-		obj.AdditionalColumns[i] = &domain.SpcObjectColumn{
+		obj.AdditionalColumns[i] = &kompas.SpcObjectColumn{
 			Name:     xmlCol.Name,
 			TypeName: xmlCol.TypeName,
 			Value:    xmlCol.Value,

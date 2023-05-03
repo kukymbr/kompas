@@ -1,4 +1,4 @@
-module github.com/kukymbr/kompasreader
+module github.com/kukymbr/kompas
 
 go 1.19
 

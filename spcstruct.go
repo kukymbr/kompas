@@ -1,4 +1,4 @@
-package domain
+package kompas
 
 // SpcStructSections is a parsed struct of the spcStruct part of the Kompas' xml
 type SpcStructSections []*SpcStructSection

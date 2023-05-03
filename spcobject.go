@@ -1,4 +1,4 @@
-package domain
+package kompas
 
 type SpcObject struct {
 	ID                string `example:"374729415333.000000"`

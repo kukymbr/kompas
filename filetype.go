@@ -1,14 +1,12 @@
-package domain
+package kompas
 
-// Kompas file types
 const (
+	// FileTypeSpw is an .spw file type
 	FileTypeSpw = FileType(5)
-	FileTypeCdw = FileType(0)
 )
 
-var typesEnabled = map[FileType]bool{
-	FileTypeSpw: true,
-	FileTypeCdw: false,
+var typesAvailable = map[FileType]struct{}{
+	FileTypeSpw: {},
 }
 
 // NewFileType creates new FileType if typeCode is valid
@@ -26,7 +24,7 @@ type FileType int
 
 // IsValid checks if file type is valid and enabled
 func (t FileType) IsValid() bool {
-	enabled, ok := typesEnabled[t]
+	_, ok := typesAvailable[t]
 
-	return ok && enabled
+	return ok
 }

@@ -1,11 +1,11 @@
 package fileinfo_test
 
 import (
+	"github.com/kukymbr/kompas"
 	"strings"
 	"testing"
 
-	"github.com/kukymbr/kompasreader/domain"
-	"github.com/kukymbr/kompasreader/internal/fileinfo"
+	"github.com/kukymbr/kompas/internal/fileinfo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -32,7 +32,7 @@ AutoSave=false
 	info, err := fileinfo.Unmarshal(cfg)
 
 	require.NoError(t, err)
-	assert.Equal(t, domain.FileTypeSpw, info.FileType)
+	assert.Equal(t, kompas.FileTypeSpw, info.FileType)
 	assert.Equal(t, "16.1.0", info.AppVersion.String())
 	assert.Equal(t, "Author Name", info.Author)
 	assert.Equal(t, "Test Comment", info.Comment)

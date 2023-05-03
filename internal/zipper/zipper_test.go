@@ -5,8 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kukymbr/kompasreader/domain"
-	"github.com/kukymbr/kompasreader/internal/zipper"
+	"github.com/kukymbr/kompas/internal/zipper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -27,8 +26,8 @@ func TestNewZipper_WhenInvalidFile_ExpectError(t *testing.T) {
 func TestZipper_OpenFile_WhenValidFile_ExpectNoError(t *testing.T) {
 	filepath := "../../testdata/example.spw"
 	files := []string{
-		domain.FilenameFileInfo,
-		domain.FilenameMetaInfo,
+		"FileInfo",
+		"MetaInfo",
 	}
 
 	zip, err := zipper.NewZipper(filepath)
@@ -67,8 +66,8 @@ func TestZipper_ReadTextFile_WhenValidFile_ExpectNoError(t *testing.T) {
 	require.NoError(t, err)
 
 	filesPrefixes := map[string]string{
-		domain.FilenameFileInfo: "[FileInfo]",
-		domain.FilenameMetaInfo: `<?xml version="1.0" encoding="utf-16"?>`,
+		"FileInfo": "[FileInfo]",
+		"MetaInfo": `<?xml version="1.0" encoding="utf-16"?>`,
 	}
 
 	for file, prefix := range filesPrefixes {

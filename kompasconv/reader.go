@@ -1,40 +1,39 @@
-package kompasreader
+package kompasconv
 
 import (
 	"fmt"
+	"github.com/kukymbr/kompas"
+	"github.com/kukymbr/kompas/internal/fileinfo"
+	"github.com/kukymbr/kompas/internal/metainfo"
+	"github.com/kukymbr/kompas/internal/zipper"
 	"os"
-
-	"github.com/kukymbr/kompasreader/domain"
-	"github.com/kukymbr/kompasreader/internal/fileinfo"
-	"github.com/kukymbr/kompasreader/internal/metainfo"
-	"github.com/kukymbr/kompasreader/internal/zipper"
 )
 
-// New creates new KompasReader for the filepath
-func New(filepath string) (reader *KompasReader, err error) {
+// NewReader creates new Reader for the filepath
+func NewReader(filepath string) (reader *Reader, err error) {
 	if _, err := os.Stat(filepath); err != nil {
-		return nil, domain.ErrInvalidFilePath
+		return nil, kompas.ErrInvalidFilePath
 	}
 
-	return &KompasReader{filepath: filepath}, nil
+	return &Reader{filepath: filepath}, nil
 }
 
-// KompasReader reads Kompas3d file
-type KompasReader struct {
+// Reader reads Kompas file
+type Reader struct {
 	filepath string
 	zipper   *zipper.Zipper
 }
 
 // Read reads specified Kompas file to the domain.Document instance
-func (k *KompasReader) Read() (doc *domain.Document, err error) {
-	doc = &domain.Document{}
+func (k *Reader) Read() (doc *kompas.Document, err error) {
+	doc = &kompas.Document{}
 
 	k.zipper, err = zipper.NewZipper(k.filepath)
 	if err != nil {
 		return nil, fmt.Errorf("init zipper: %w", err)
 	}
 
-	info, err := k.zipper.ReadTextFile(domain.FilenameFileInfo)
+	info, err := k.zipper.ReadTextFile(filenameFileInfo)
 	if err != nil {
 		return nil, fmt.Errorf("read fileinfo: %w", err)
 	}
@@ -44,10 +43,10 @@ func (k *KompasReader) Read() (doc *domain.Document, err error) {
 		return nil, fmt.Errorf("unmarshal fileinfo: %w", err)
 	}
 
-	doc.MetaInfo = &domain.MetaInfo{}
+	doc.MetaInfo = &kompas.MetaInfo{}
 
 	{
-		meta, err := k.zipper.ReadTextFile(domain.FilenameMetaInfo)
+		meta, err := k.zipper.ReadTextFile(filenameMetaInfo)
 		if err != nil {
 			return nil, fmt.Errorf("read meta info: %w", err)
 		}

@@ -1,17 +1,16 @@
 ## Kompas 3D files Reader
 
-Package to read spc data from the Kompas files.
+Package to read specifications data from the Kompas files.
 
 ### Usage
 
-Add `kompassreader` to project:
+Add library to project:
 
 ```shell
-go get github.com/kukymbr/kompasreader
+go get github.com/kukymbr/kompas
 ```
 
-Import package `github.com/kukymbr/kompasreader` and 
-read Kompas file:
+Import packages and read Kompas file:
 
 ```go
 package main
@@ -19,18 +18,22 @@ package main
 import (
 	"fmt"
 
-	"github.com/kukymbr/kompasreader"
+	"github.com/kukymbr/kompas"
+	"github.com/kukymbr/kompas/kompasconv"
 )
 
 func main() {
+	var doc *kompas.Document
+	var err error
+	
 	filepath := "testdata/example.spw"
 
-	reader, err := kompasreader.New(filepath)
+	reader, err := kompasconv.NewReader(filepath)
 	if err != nil {
 		panic(err)
 	}
 
-	doc, err := reader.Read()
+	doc, err = reader.Read()
 	if err != nil {
 		panic(err)
 	}

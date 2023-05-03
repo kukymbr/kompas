@@ -1,33 +1,32 @@
-package kompasreader_test
+package kompasconv_test
 
 import (
-	"testing"
-
-	"github.com/kukymbr/kompasreader"
-	"github.com/kukymbr/kompasreader/domain"
+	"github.com/kukymbr/kompas"
+	"github.com/kukymbr/kompas/kompasconv"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"testing"
 )
 
 func TestNew_ValidFile_ExpectNoError(t *testing.T) {
-	filepath := "testdata/example.spw"
-	r, err := kompasreader.New(filepath)
+	filepath := "../testdata/example.spw"
+	r, err := kompasconv.NewReader(filepath)
 
 	require.NoError(t, err)
 	require.NotNil(t, r)
 }
 
 func TestNew_InvalidFile_ExpectError(t *testing.T) {
-	filepath := "testdata/invalid_path.spw"
-	r, err := kompasreader.New(filepath)
+	filepath := "../testdata/invalid_path.spw"
+	r, err := kompasconv.NewReader(filepath)
 
 	assert.Error(t, err)
 	assert.Nil(t, r)
 }
 
 func TestKompasReader_Read_WhenValidFile_ExpectNoError(t *testing.T) {
-	filepath := "testdata/example.spw"
-	reader, err := kompasreader.New(filepath)
+	filepath := "../testdata/example.spw"
+	reader, err := kompasconv.NewReader(filepath)
 	require.NoError(t, err)
 
 	doc, err := reader.Read()
@@ -37,7 +36,7 @@ func TestKompasReader_Read_WhenValidFile_ExpectNoError(t *testing.T) {
 
 	require.NotNil(t, doc.FileInfo)
 	assert.Equal(t, "Lapina", doc.FileInfo.Author)
-	assert.Equal(t, domain.FileTypeSpw, doc.FileInfo.FileType)
+	assert.Equal(t, kompas.FileTypeSpw, doc.FileInfo.FileType)
 	assert.Equal(t, "16.1.0", doc.FileInfo.AppVersion.String())
 	assert.Equal(t, "2022-10-05 14:05:09", doc.FileInfo.CreatedAt.Format("2006-01-02 15:04:05"))
 

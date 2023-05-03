@@ -1,17 +1,17 @@
 package fileinfo
 
 import (
+	"github.com/kukymbr/kompas"
 	"io"
 	"strings"
 	"time"
 
 	"github.com/hashicorp/go-version"
-	"github.com/kukymbr/kompasreader/domain"
 	"gopkg.in/ini.v1"
 )
 
 // Unmarshal reads ini data from reader and converts it to domain.FileInfo instance
-func Unmarshal(cfg io.Reader) (info *domain.FileInfo, err error) {
+func Unmarshal(cfg io.Reader) (info *kompas.FileInfo, err error) {
 	inidoc, err := ini.Load(cfg)
 	if err != nil {
 		return nil, err
@@ -40,13 +40,13 @@ type fileInfoRAW struct {
 	ModifyData string `ini:"ModifyData"`
 }
 
-func (data *fileInfoRAW) createFileInfo() (info *domain.FileInfo, err error) {
-	info = &domain.FileInfo{
+func (data *fileInfoRAW) createFileInfo() (info *kompas.FileInfo, err error) {
+	info = &kompas.FileInfo{
 		Author:  data.Author,
 		Comment: data.Comment,
 	}
 
-	filetype, err := domain.NewFileType(data.FileType)
+	filetype, err := kompas.NewFileType(data.FileType)
 	if err != nil {
 		return nil, err
 	}

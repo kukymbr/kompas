@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kukymbr/kompasreader/internal/metainfo"
+	"github.com/kukymbr/kompas/internal/metainfo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
