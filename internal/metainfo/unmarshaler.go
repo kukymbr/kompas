@@ -68,9 +68,7 @@ func (u *Unmarshaler) prepareXML() (data []byte, err error) {
 	str = strings.TrimSpace(str)
 
 	header := `<?xml version="1.0" encoding="utf-16"?>`
-	if strings.HasPrefix(str, header) {
-		str = strings.TrimPrefix(str, header)
-	}
+	str = strings.TrimPrefix(str, header)
 
 	return []byte(str), nil
 }
