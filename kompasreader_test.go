@@ -10,7 +10,7 @@ import (
 )
 
 func TestNew_ValidFile_ExpectNoError(t *testing.T) {
-	filepath := "tests/example.spw"
+	filepath := "testdata/example.spw"
 	r, err := kompasreader.New(filepath)
 
 	require.NoError(t, err)
@@ -18,7 +18,7 @@ func TestNew_ValidFile_ExpectNoError(t *testing.T) {
 }
 
 func TestNew_InvalidFile_ExpectError(t *testing.T) {
-	filepath := "tests/invalid_path.spw"
+	filepath := "testdata/invalid_path.spw"
 	r, err := kompasreader.New(filepath)
 
 	assert.Error(t, err)
@@ -26,7 +26,7 @@ func TestNew_InvalidFile_ExpectError(t *testing.T) {
 }
 
 func TestKompasReader_Read_WhenValidFile_ExpectNoError(t *testing.T) {
-	filepath := "tests/example.spw"
+	filepath := "testdata/example.spw"
 	reader, err := kompasreader.New(filepath)
 	require.NoError(t, err)
 

@@ -13,8 +13,8 @@ import (
 
 func TestNewZipper_WhenInvalidFile_ExpectError(t *testing.T) {
 	paths := []string{
-		"../../tests/invalid_path.spw",
-		"../../tests/invalid_file.spw",
+		"../../testdata/invalid_path.spw",
+		"../../testdata/invalid_file.spw",
 	}
 
 	for _, path := range paths {
@@ -25,7 +25,7 @@ func TestNewZipper_WhenInvalidFile_ExpectError(t *testing.T) {
 }
 
 func TestZipper_OpenFile_WhenValidFile_ExpectNoError(t *testing.T) {
-	filepath := "../../tests/example.spw"
+	filepath := "../../testdata/example.spw"
 	files := []string{
 		domain.FilenameFileInfo,
 		domain.FilenameMetaInfo,
@@ -44,7 +44,7 @@ func TestZipper_OpenFile_WhenValidFile_ExpectNoError(t *testing.T) {
 }
 
 func TestZipper_OpenFile_WhenInvalidFile_ExpectError(t *testing.T) {
-	filepath := "../../tests/example.spw"
+	filepath := "../../testdata/example.spw"
 	files := []string{
 		"UnknownFile.1",
 		"UnknownFile.2",
@@ -63,7 +63,7 @@ func TestZipper_OpenFile_WhenInvalidFile_ExpectError(t *testing.T) {
 }
 
 func TestZipper_ReadTextFile_WhenValidFile_ExpectNoError(t *testing.T) {
-	zip, err := zipper.NewZipper("../../tests/example.spw")
+	zip, err := zipper.NewZipper("../../testdata/example.spw")
 	require.NoError(t, err)
 
 	filesPrefixes := map[string]string{
@@ -82,7 +82,7 @@ func TestZipper_ReadTextFile_WhenValidFile_ExpectNoError(t *testing.T) {
 }
 
 func TestZipper_ReadTextFile_WhenInvalidFile_ExpectError(t *testing.T) {
-	zip, err := zipper.NewZipper("../../tests/example.spw")
+	zip, err := zipper.NewZipper("../../testdata/example.spw")
 	require.NoError(t, err)
 
 	text, err := zip.OpenFile("unknown_file")

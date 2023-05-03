@@ -23,7 +23,7 @@ import (
 )
 
 func main() {
-	filepath := "tests/example.spw"
+	filepath := "testdata/example.spw"
 
 	reader, err := kompasreader.New(filepath)
 	if err != nil {
