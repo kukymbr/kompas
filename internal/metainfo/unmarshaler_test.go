@@ -9,11 +9,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestUnmarshaller_Unmarshall_WhenValidXML_ExpectNoError(t *testing.T) {
+func TestUnmarshaler_Unmarshal_WhenValidXML_ExpectNoError(t *testing.T) {
 	reader := strings.NewReader(givenValidXML())
 
-	unm := metainfo.NewUnmarshaller(reader)
-	spc, err := unm.Unmarshall()
+	unm := metainfo.NewUnmarshaler(reader)
+	spc, err := unm.Unmarshal()
 
 	require.NoError(t, err)
 	require.NotNil(t, spc)

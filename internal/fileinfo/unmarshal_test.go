@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestUnmarshall_WhenValidData_ExpectNoError(t *testing.T) {
+func TestUnmarshal_WhenValidData_ExpectNoError(t *testing.T) {
 	cfg := strings.NewReader(`
 [FileInfo]
 AppName=КОМПАС-3D V16.1
@@ -29,7 +29,7 @@ Comment=Test Comment
 AutoSave=false
 `)
 
-	info, err := fileinfo.Unmarshall(cfg)
+	info, err := fileinfo.Unmarshal(cfg)
 
 	require.NoError(t, err)
 	assert.Equal(t, domain.FileTypeSpw, info.FileType)
@@ -40,7 +40,7 @@ AutoSave=false
 	assert.Equal(t, "20221021_095205", info.UpdatedAt.Format("20060102_150405"))
 }
 
-func TestUnmarshall_WhenInvalidData_ExpectError(t *testing.T) {
+func TestUnmarshal_WhenInvalidData_ExpectError(t *testing.T) {
 	invalid := []string{
 		`AppVersion=KOMPAS_16.1
 FileType=5
@@ -66,7 +66,7 @@ Comment=Test Comment`,
 
 	for _, content := range invalid {
 		cfg := strings.NewReader(content)
-		info, err := fileinfo.Unmarshall(cfg)
+		info, err := fileinfo.Unmarshal(cfg)
 
 		assert.Error(t, err)
 		assert.Nil(t, info)

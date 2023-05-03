@@ -9,17 +9,17 @@ import (
 	"github.com/kukymbr/kompasreader/domain"
 )
 
-// NewUnmarshaller creates new Unmarshaller instance for the reader
-func NewUnmarshaller(reader io.Reader) *Unmarshaller {
-	return &Unmarshaller{reader: reader}
+// NewUnmarshaler creates new Unmarshaler instance for the reader
+func NewUnmarshaler(reader io.Reader) *Unmarshaler {
+	return &Unmarshaler{reader: reader}
 }
 
-type Unmarshaller struct {
+type Unmarshaler struct {
 	reader io.Reader
 	doc    *xmlDoc
 }
 
-func (u *Unmarshaller) Unmarshall() (spc domain.SpcStructSections, err error) {
+func (u *Unmarshaler) Unmarshal() (spc domain.SpcStructSections, err error) {
 	u.doc = &xmlDoc{}
 
 	data, err := u.prepareXML()
@@ -59,7 +59,7 @@ func (u *Unmarshaller) Unmarshall() (spc domain.SpcStructSections, err error) {
 	return spc, nil
 }
 
-func (u *Unmarshaller) prepareXML() (data []byte, err error) {
+func (u *Unmarshaler) prepareXML() (data []byte, err error) {
 	data, err = io.ReadAll(u.reader)
 	if err != nil {
 		return nil, err
@@ -76,7 +76,7 @@ func (u *Unmarshaller) prepareXML() (data []byte, err error) {
 	return []byte(str), nil
 }
 
-func (u *Unmarshaller) buildSpcObject(xmlSectObj *xmlDocSpcStructObject) *domain.SpcObject {
+func (u *Unmarshaler) buildSpcObject(xmlSectObj *xmlDocSpcStructObject) *domain.SpcObject {
 	xmlObj := u.doc.findSpcObjectByID(xmlSectObj.ID)
 	if xmlObj == nil {
 		return nil

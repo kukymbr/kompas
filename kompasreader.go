@@ -39,9 +39,9 @@ func (k *KompasReader) Read() (doc *domain.Document, err error) {
 		return nil, fmt.Errorf("read fileinfo: %w", err)
 	}
 
-	doc.FileInfo, err = fileinfo.Unmarshall(info)
+	doc.FileInfo, err = fileinfo.Unmarshal(info)
 	if err != nil {
-		return nil, fmt.Errorf("unmarshall fileinfo: %w", err)
+		return nil, fmt.Errorf("unmarshal fileinfo: %w", err)
 	}
 
 	doc.MetaInfo = &domain.MetaInfo{}
@@ -52,10 +52,10 @@ func (k *KompasReader) Read() (doc *domain.Document, err error) {
 			return nil, fmt.Errorf("read meta info: %w", err)
 		}
 
-		metaUnm := metainfo.NewUnmarshaller(meta)
-		doc.MetaInfo.SpcStructSections, err = metaUnm.Unmarshall()
+		metaUnm := metainfo.NewUnmarshaler(meta)
+		doc.MetaInfo.SpcStructSections, err = metaUnm.Unmarshal()
 		if err != nil {
-			return nil, fmt.Errorf("unmarshall meta info: %w", err)
+			return nil, fmt.Errorf("unmarshal meta info: %w", err)
 		}
 	}
 

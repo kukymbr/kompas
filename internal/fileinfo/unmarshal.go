@@ -10,8 +10,8 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-// Unmarshall reads ini data from reader and converts it to domain.FileInfo instance
-func Unmarshall(cfg io.Reader) (info *domain.FileInfo, err error) {
+// Unmarshal reads ini data from reader and converts it to domain.FileInfo instance
+func Unmarshal(cfg io.Reader) (info *domain.FileInfo, err error) {
 	inidoc, err := ini.Load(cfg)
 	if err != nil {
 		return nil, err
